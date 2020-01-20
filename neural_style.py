@@ -54,6 +54,15 @@ def imshow(tensor, title=None):
         plt.title(title)
     plt.pause(0.001) # pause a bit so that plots are updated
 
+def imsave(filepath, tensor, title=None):
+    image = tensor.cpu().clone()  # we clone the tensor to not do changes on it
+    image = image.squeeze(0)      # remove the fake batch dimension
+    image = unloader(image)
+    if title is not None:
+        plt.title(title)
+    plt.pause(0.001) # pause a bit so that plots are updated
+    plt.imsave(filepath, image)
+
 
 plt.figure()
 imshow(style_img, title='Style Image')
@@ -257,6 +266,7 @@ output = run_style_transfer(cnn, cnn_normalization_mean, cnn_normalization_std,
 
 plt.figure()
 imshow(output, title='Output Image')
+imsave("output.jpg", output, title='Output Image')
 
 # sphinx_gallery_thumbnail_number = 4
 plt.ioff()
